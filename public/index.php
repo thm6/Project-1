@@ -97,6 +97,7 @@ class record {
     }
 
     public function createProperty($name = "first", $value = 'Harry') {
+        
 
         $this->{$name} = $value;
 
