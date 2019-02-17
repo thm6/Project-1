@@ -1,5 +1,3 @@
-UCID, firstName,lastName
-1, Harry, Potter, IS601
-3, Michael, Jordan, IS663
-4, Jack, Daniel, IS663
-5, Johnny, Walker, IS665
+First,Last,UCID,rade
+Harry,Potter,Hpotter,A
+Harry,Potter,Hpotter,A
