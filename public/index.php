@@ -23,6 +23,33 @@ class csvTable
         print $tableHTML;
         $this->outputFooter();
     }
+
+    private function createTable($array)
+    {
+        $i = 0;
+        $table = '<table class="table table-striped">';
+        foreach ($array as $k => $row) {
+            if ($i == 0) {
+                $tag = 'th';
+                $table .= "\n" . '<thead>';
+            } else $tag = 'td';
+            $table .= "\n<tr>";
+            foreach ($row as $kk => $cell) {
+                // sanitize our output from file
+                $table .= "\n<" . $tag . '>' . htmlspecialchars($cell) . '</' . $tag . '>';
+            }
+            $table .= "\n</tr>";
+            if ($i == 0) $table .= '</thead><tbody>';
+            $i++;
+        }
+        $table .= '</tbody></table>';
+        return $table;
+    }
+    
+
+
+
+
 }
 
 
@@ -79,33 +106,6 @@ class html
 }
 
 
-class array2Table {
-
-    static public function create($array) {
-
-        $i = 0;
-        $table = '<table class="table table-striped">';
-        foreach($array as $k => $row) {
-            if($i == 0) {
-                $tag = 'th';
-                $table .="\n".'<thead>';
-            }
-            else $tag = 'td';
-            $table .= "\n<tr>";
-            foreach($row as $kk => $cell) {
-                $table .= "\n<".$tag.'>'.htmlspecialchars($cell).'</'.$tag.'>';
-            }
-            $table .="\n</tr>";
-            if($i ==0) $table .= '</thead><tbody>';
-            $i++;
-        }
-        $table .= '</tbody></table>';
-        return $table;
-    }
-
-
-}
-
 class csv{
 
     static public function getRecords($filename){
@@ -123,17 +123,6 @@ class csv{
             $record = fgetcsv($file);
             $tableRecords[] = $record;
 
-            /* if($count == 0){
-
-                 $fieldNames = $record;
-             }
-             else{
-
-                 $records[] = recordFactory::create($fieldNames, $record);
-
-           *--- This area was where script execution was stopping without apparent reason or error--*
-
-             }*/
             $count++;
         }
         return $tableRecords;
@@ -142,36 +131,5 @@ class csv{
         print_r($fieldNames);
         return $records;
 
-    }
-}
-class record {
-    public function __construct(Array $fieldNames = null, $values = null){
-
-        $record = array_combine($fieldNames, $values);
-        foreach ($record as $property => $value) {
-            $this->createProperty($property, $value);
-        }
-    }
-    public function returnArray() {
-
-        $array = (array) $this;
-        return $array;
-
-    }
-
-    public function createProperty($name = "first", $value = 'Harry') {
-
-        $this->{$name} = $value;
-    }
-}
-class recordFactory
-{
-
-    public static function create(Array $fieldNames = null, Array $values = null)
-    {
-
-        $record = new record($fieldNames, $values);
-
-        return $record;
     }
 }
