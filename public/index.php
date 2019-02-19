@@ -2,15 +2,30 @@
 /**
  * Created by PhpStorm.
  */
-main::start("file.csv");
-class main
+$csvTable = new csvTable;
+$csvTable->start('file.csv');
+
+class csvTable
 {
-    static public function start($filename)
+
+    public function start($filename)
     {
+
         $records = csv::getRecords($filename);
-        $table = html::generateTable($records);
+        $tableHTML = $this->createTable($records);
+        $docHead = '<!doctype html><html lang="en"><head>'
+//            .'rel="stylesheet" type="text/css" href="style.css">'
+            . '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">'
+            . '</head><body>';
+        print $docHead;
+
+        print $tableHTML;
+        $this->outputFooter();
     }
 }
+
+
 class html
 {
     public static function generateTable($records)
@@ -32,8 +47,8 @@ class html
                     $tableHTML .= htmlspecialchars($field);
                     $tableHTML .= '</td>';
                 }
-                    $tableHTML .= '</th>';
-                    $tableHTML .= "\n".'<tr>';
+                $tableHTML .= '</th>';
+                $tableHTML .= "\n".'<tr>';
                 foreach ($values as $value) {
                     $tableHTML .= "\n\t".'<td style="border:1px solid #ddd">';
                     $tableHTML .= htmlspecialchars($value);
@@ -64,27 +79,32 @@ class html
 }
 
 
-class array2Table{
+class array2Table {
 
-    static public function create($array)
+    static public function create($array) {
 
-
-
+        $i = 0;
+        $table = '<table class="table table-striped">';
+        foreach($array as $k => $row) {
+            if($i == 0) {
+                $tag = 'th';
+                $table .="\n".'<thead>';
+            }
+            else $tag = 'td';
+            $table .= "\n<tr>";
+            foreach($row as $kk => $cell) {
+                $table .= "\n<".$tag.'>'.htmlspecialchars($cell).'</'.$tag.'>';
+            }
+            $table .="\n</tr>";
+            if($i ==0) $table .= '</thead><tbody>';
+            $i++;
+        }
+        $table .= '</tbody></table>';
+        return $table;
+    }
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 class csv{
 
@@ -103,17 +123,17 @@ class csv{
             $record = fgetcsv($file);
             $tableRecords[] = $record;
 
-           /* if($count == 0){
+            /* if($count == 0){
 
-                $fieldNames = $record;
-            }
-            else{
+                 $fieldNames = $record;
+             }
+             else{
 
-                $records[] = recordFactory::create($fieldNames, $record);
+                 $records[] = recordFactory::create($fieldNames, $record);
 
-          *--- This area was where script execution was stopping without apparent reason or error--*
+           *--- This area was where script execution was stopping without apparent reason or error--*
 
-            }*/
+             }*/
             $count++;
         }
         return $tableRecords;
@@ -144,9 +164,11 @@ class record {
         $this->{$name} = $value;
     }
 }
-class recordFactory{
+class recordFactory
+{
 
-    public static function create(Array $fieldNames = null, Array $values = null) {
+    public static function create(Array $fieldNames = null, Array $values = null)
+    {
 
         $record = new record($fieldNames, $values);
 
