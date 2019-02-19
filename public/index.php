@@ -45,7 +45,9 @@ class csvTable
         $table .= '</tbody></table>';
         return $table;
     }
-    
+
+
+
 
 
 
@@ -53,53 +55,6 @@ class csvTable
 }
 
 
-class html
-{
-    public static function generateTable($records)
-    {
-        $count = 0;
-
-        $tableHTML = '<table class="students" style="border:1px solid #c00;">';
-        foreach ($records as $record) {
-
-            if($count == 0){
-                $array = $record->returnArray();
-                $fields = array_keys($array);
-                $values = array_values($array);
-                //print_r($fields);
-                //print_r($values);
-                $tableHTML .= "\n".'<th style="text-align:left;">';
-                foreach ($fields as $field) {
-                    $tableHTML .= "\n\t" . '<td style="border:1px solid #ddd; float:left;">';
-                    $tableHTML .= htmlspecialchars($field);
-                    $tableHTML .= '</td>';
-                }
-                $tableHTML .= '</th>';
-                $tableHTML .= "\n".'<tr>';
-                foreach ($values as $value) {
-                    $tableHTML .= "\n\t".'<td style="border:1px solid #ddd">';
-                    $tableHTML .= htmlspecialchars($value);
-                    $tableHTML .= '</td>';
-                }
-                $tableHTML .= '</tr>';
-
-            } else {
-                $array = $record->returnArray();
-                $values = array_values($array);
-                //print_r($values);
-                $tableHTML .= "\n".'<tr>';
-                foreach ($values as $value) {
-                    $tableHTML .= "\n\t".'<td style="border:1px solid #ddd">';
-                    $tableHTML .= htmlspecialchars($value);
-                    $tableHTML .= '</td>';
-                }
-                $tableHTML .= '</tr>';
-
-            }
-            $count++;
-        }
-        $tableHTML .= '</table>';
-        return $tableHTML;
 
 
     }
