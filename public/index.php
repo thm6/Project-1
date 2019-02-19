@@ -1,9 +1,6 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: tai
- * Date: 2/16/19
- * Time: 2:42 AM
  */
 main::start("file.csv");
 class main
@@ -66,6 +63,16 @@ class html
     }
 }
 
+
+class array2Table{
+
+    static public function create($array)
+
+
+
+
+
+}
 
 
 
